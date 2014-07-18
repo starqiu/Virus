@@ -1,0 +1,100 @@
+1.9个寄存器都是干嘛用的？
+	eax 累加器 ；ecx 计数器 ； edx 数据寄存器 ；
+	ebx 基址寄存器 ；esi  源索引寄存器，用于字符串操作;edi 目标索引寄存器，用于字符串操作；
+	ebp 栈基址寄存器 ；esp 栈顶指针寄存器
+
+	eip 指令寄存器，存放下一个CPU指令的内存地址
+
+2.哪些是caller-saved 哪些是callee-saved
+	caller-saved ：eax，ecx，edx
+	callee-saved ：ebx，esi，edi，ebp，esp
+
+3.实验中常用的API作用是什么，比如LoadLibraryA，GetProcAddress，OpenProcess
+，GetModuleHandleA，WriteProcessMemory（使用两次以上的API，不要求记参数，记名字和意思）
+	LoadLibraryA：导入DLL并返回DLL的基址
+	GetProcAddress：返回函数的地址
+	OpenProcess： 根据进程ID打开一个进程，成功后返回进程句柄
+	GetModuleHandleA：返回目标pe文件的基址
+	WriteProcessMemory：根据进程句柄往指定进程的内存区域写数据
+	FindWindow 通过标题得到主窗口句柄
+	GetWindow得到子窗口句柄
+	GetWindowThreadProcessId 通过窗口句柄得到PID
+	SetWindowLongA: 设置窗口过程, 返回值为旧的窗口过程
+	CallWindowProcA: 手动调用窗口过程
+
+4.常见指令的用法及含义 如call，ret
+	call xx ::= push ret_addr; jmp xx （直接跳转 E8）
+	ret     ::= pop eax; jmp eax （C3）
+
+5.PE结构头部的关键数据域的名称和含义，比如AOEP，ImageBase,NUmberOfSections等等
+	AOEP：AddressOfEntryPoint（RVA） 程序入口点；
+	ImageBase：装入内存的期望地址(RVA),实际加载到内存中可能会被修改
+	NUmberOfSections：Sections的个数
+
+6.什么是 calling convention，常见的calling convention都有哪些，区别及用途
+	calling convention 是指程序在函数调用时传递参数和获取返回值时所采用的方法 ：通过寄存器或通过栈，或者二者结合，用于维护栈平衡
+	常见的calling convention 有__cdecl,__stdcall,__fastcall
+	其中__cdecl 传参是从右到左依次入栈，caller清栈 ,为c语言默认的calling convention，参数可不固定
+	__stdcall 传参是从右到左依次入栈，callee清栈，为windows API的calling convention ，参数固定
+	__fastcall 传参是 ecx，edx与栈结合，caller清栈
+
+	通过命名修饰来判断是哪一种calling convention
+
+7.PE结构中的RVA的含义和作用是什么？
+	RVA ：Relative Virtual Address 相对虚拟地址，指的是加载到内存中的offset，而非磁盘文件中的offset
+	作用：PE文件加载到内存后，PE头文件中的地址不需要改变（ImageBase 除外）
+
+8.如何写一个code注入器（injector），分析总结实验中的代码
+	1.准备code数组（可能需要打补丁）
+	2.OpenProcess打开远程进程（PID）
+	3.VirtualAllocEx远程分配内存空间（RWE权限）
+	4.WriteProcessMemory 将code注入到第3步分配的空间中
+	5.CreateRemoteThread 创建远程线程执行注入code，WaitForSingleObject等待code执行完成，GetExitCodeThread获得返回值
+9.实验三中，IAT hooking的原理及过程，什么是IAT，IAT有什么作用，如何找到IAT，IAT和import table 的区别
+	IAT hooking的原理及过程
+	动态链接在链接时通过导入表和导出表确定程序所需要用到的函数地址并填到IAT中 , 实际调用的时候都是从IAT中去读出目标函数的地址,通过替换这个地址, 从而可以对执行流实现拦截, 
+	1.	首先得在PE头中找到数据目录, 从中找到IT和IAT的地址,
+	2.	分析得到系统函数的地址, 这个地址将会被覆盖 , 故将其保存备份
+	3.	在攻击函数结束处调用备份的原系统函数地址, 使得被攻击程序运行完攻击代码后仍然正常运行.
+	4.	将攻击函数的地址覆盖系统函数在IAT中保存的地址
+10.用汇编语言写一个函数的基本结构是什么，什么是函数的prolog，epilog，它们的作用是什么，和calling convention有什么关系
+	prolog：设置栈帧，给局部变量分配空间，保存callee-saved 寄存器
+	epilog：恢复callee-saved寄存器，清除栈帧
+	栈平衡
+	Q: 为什么需要运行栈 (重要)
+	A: 函数调用, 嵌套调用, 递归调用, 参数传递, 局部变量保存, 异常处理, 多线程
+	Q:为什么不用一个寄存器存返回地址
+	A:嵌套调用需要保存多个返回地址
+
+11.什么是动态链接，如何编译产生一个dll，在运行过程中，主程序如何和dll建立起通道，发生调用关系
+	动态链接是指在链接时仅仅确认需要链接的文件信息，将需要调用的外部函数信息保存在导入表中，当导入时才把需要链接的dll装入并通过导入导出表修正导入地址表。编译产生一个dll的过程如下：
+	cl /c hello.c
+	link /dll hello.obj
+	链接dll的过程如下：
+	cl /c main.c
+	link main.obj hello.lib 
+	运行时，通过IAT来找到真正的目标函数地址
+
+12.实验四，把一段代码插入到一个PE文件中，都需要哪些步骤？
+	1.	将PE文件读入内存
+	2.	将攻击代码读入内存, 得到2进制形式
+	3.	修改内存中PE文件, 增加section, 并在section table增加节头, 指明内存中的地址大小, 和硬盘上的地址和大小 ; 修改文件头中的NumberOfSections ; 修改可选头中的SizeOfImage , 保存原AOEP , 将AOEP指向攻击代码, 并让攻击代码执行完后执行原AOEP
+	4.	将内存中的PE镜像导出到硬盘
+
+13.什么是窗口消息，什么是窗口过程，窗口过程的作用是什么，如何修改窗口过程？
+	消息机制是Windows应用程序的核心。在Windows中发生的一切都可以用消息来表示，消息用于告诉操作系统发生了什么，所有的Windows应用程序都是消息驱动的, 例如键盘消息, 鼠标消息
+	当窗口显示之后，它就可以接收到系统源源不断地发过来的消息，窗口需要一个函数来处理这些消息。这个窗口消息处理函数即窗口过程
+	Windows系统中的每个窗口都有一个相应的窗口过程，是一个回调函数，用于接受和处理发送给该窗口的所有消息。
+	通过setWindowLongA函数可以修改窗口过程
+
+14.静态链接和动态链接的区别和联系
+	链接的基本原理：链接器将多个目标文件（可重定位目标文件）链接成一个完整的，可加载的，可执行的目标文件。分为静态链接, 动态链接, 
+	静态链接在链接时就把所有目标文件链接到一起, 确定调用函数的地址, 简单浪费空间(硬盘空间内存空间) , 
+	动态链接在链接时仅仅确定需要链接的文件的信息, 将需要调用的外部函数信息保存在导入表中, 当装入时才把需要链接的dll装入并通过导入导出表修正导入地址表, 运行的时候通过导入地址表来找到真正的目标函数地址, 复杂节省空间(实现dll共享)
+15.杀毒策略
+	算法扫描, 启发式扫描, 代码仿真, 行为阻断
+	算法扫描：对病毒先分类，不同病毒算法不同（缺点：代码多，运行慢，优点：没有限制）
+	启发式扫描：看到可疑的行为，加一个权重，当权重达到一定程度的时候就报警(缺点：误报较多，优点：监控新病毒很有效)
+	代码仿真：让代码在仿真器中运行（优点：对付多态，加密及入口点混淆的病毒很有效 ；对抗：发现在仿真器中运行病毒就不执行）
+	行为阻断：对于可疑的行为会提示用户 , 由用户决定是否执行（缺点：太多警告 , 用户不一定懂 , 容易被绕过）
+	替罪羊：用一个全是0XAA的文件让病毒感染，分析人员常用

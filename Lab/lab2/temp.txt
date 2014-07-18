@@ -1,0 +1,25 @@
+55 8B EC 6A 00 68 24 80 40 00 68 30 80 40 00 6A
+00 FF 15 E4 60 40 00 5D C3
+
+8B FF
+
+77D507EA
+00408026
+779487C4
+
+hModUser32 = LoadLibraryA(“user32.dll”);
+hProc = GetProcAddress(hModUser32, “MessageBoxA”); 
+hProc(0,”I’m hacked!”, ”I’m hacked!”, MB_OK);
+
+MessageBoxA:
+77D507EA
+00408044
+779487A6
+LoadLibraryA: 
+7c801d7b
+0040803c
+7c3f9d3f
+GetProcAddress: 0x
+7c80ae40
+00408080
+7c402DC0

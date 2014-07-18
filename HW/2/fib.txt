@@ -1,0 +1,240 @@
+Microsoft (R) COFF/PE Dumper Version 10.00.30319.01
+Copyright (C) Microsoft Corporation.  All rights reserved.
+
+
+Dump of file Fib4MultiThread.obj
+
+File Type: COFF OBJECT
+
+_swtch:
+  00000000: 8B 44 24 04        mov         eax,dword ptr [esp+4]
+  00000004: 8F 00              pop         dword ptr [eax]
+  00000006: 89 60 04           mov         dword ptr [eax+4],esp
+  00000009: 89 58 08           mov         dword ptr [eax+8],ebx
+  0000000C: 89 68 0C           mov         dword ptr [eax+0Ch],ebp
+  0000000F: 8B 44 24 08        mov         eax,dword ptr [esp+8]
+  00000013: 8B 4C 24 04        mov         ecx,dword ptr [esp+4]
+  00000017: 8B 69 0C           mov         ebp,dword ptr [ecx+0Ch]
+  0000001A: 8B 59 08           mov         ebx,dword ptr [ecx+8]
+  0000001D: 8B 61 04           mov         esp,dword ptr [ecx+4]
+  00000020: FF 31              push        dword ptr [ecx]
+  00000022: C3                 ret
+  00000023: CC                 int         3
+  00000024: CC                 int         3
+  00000025: CC                 int         3
+  00000026: CC                 int         3
+  00000027: CC                 int         3
+  00000028: CC                 int         3
+  00000029: CC                 int         3
+  0000002A: CC                 int         3
+  0000002B: CC                 int         3
+  0000002C: CC                 int         3
+  0000002D: CC                 int         3
+  0000002E: CC                 int         3
+  0000002F: CC                 int         3
+_A_proc:
+  00000030: 55                 push        ebp
+  00000031: 8B EC              mov         ebp,esp
+  00000033: 83 EC 08           sub         esp,8
+  00000036: C7 45 F8 01 00 00  mov         dword ptr [ebp-8],1
+            00
+  0000003D: C7 45 FC 01 00 00  mov         dword ptr [ebp-4],1
+            00
+  00000044: 8B 45 F8           mov         eax,dword ptr [ebp-8]
+  00000047: 50                 push        eax
+  00000048: 68 00 00 00 00     push        offset $SG2656
+  0000004D: E8 00 00 00 00     call        _printf
+  00000052: 83 C4 08           add         esp,8
+  00000055: 68 00 00 00 00     push        offset _B
+  0000005A: 68 00 00 00 00     push        offset _A
+  0000005F: E8 00 00 00 00     call        _swtch
+  00000064: 83 C4 08           add         esp,8
+  00000067: EB 09              jmp         00000072
+  00000069: 8B 4D FC           mov         ecx,dword ptr [ebp-4]
+  0000006C: 83 C1 01           add         ecx,1
+  0000006F: 89 4D FC           mov         dword ptr [ebp-4],ecx
+  00000072: 8B 55 FC           mov         edx,dword ptr [ebp-4]
+  00000075: 3B 15 00 00 00 00  cmp         edx,dword ptr [_round]
+  0000007B: 7D 3D              jge         000000BA
+  0000007D: 8B 45 F8           mov         eax,dword ptr [ebp-8]
+  00000080: 03 05 00 00 00 00  add         eax,dword ptr [_temp]
+  00000086: 89 45 F8           mov         dword ptr [ebp-8],eax
+  00000089: 8B 4D F8           mov         ecx,dword ptr [ebp-8]
+  0000008C: 89 0D 00 00 00 00  mov         dword ptr [_temp],ecx
+  00000092: 8B 15 00 00 00 00  mov         edx,dword ptr [_temp]
+  00000098: 52                 push        edx
+  00000099: 68 00 00 00 00     push        offset $SG2660
+  0000009E: E8 00 00 00 00     call        _printf
+  000000A3: 83 C4 08           add         esp,8
+  000000A6: 68 00 00 00 00     push        offset _B
+  000000AB: 68 00 00 00 00     push        offset _A
+  000000B0: E8 00 00 00 00     call        _swtch
+  000000B5: 83 C4 08           add         esp,8
+  000000B8: EB AF              jmp         00000069
+  000000BA: A1 00 00 00 00     mov         eax,dword ptr [_n]
+  000000BF: 25 01 00 00 80     and         eax,80000001h
+  000000C4: 79 05              jns         000000CB
+  000000C6: 48                 dec         eax
+  000000C7: 83 C8 FE           or          eax,0FFFFFFFEh
+  000000CA: 40                 inc         eax
+  000000CB: 85 C0              test        eax,eax
+  000000CD: 75 3A              jne         00000109
+  000000CF: 8B 4D F8           mov         ecx,dword ptr [ebp-8]
+  000000D2: 03 0D 00 00 00 00  add         ecx,dword ptr [_temp]
+  000000D8: 89 4D F8           mov         dword ptr [ebp-8],ecx
+  000000DB: 8B 55 F8           mov         edx,dword ptr [ebp-8]
+  000000DE: 89 15 00 00 00 00  mov         dword ptr [_temp],edx
+  000000E4: A1 00 00 00 00     mov         eax,dword ptr [_temp]
+  000000E9: 50                 push        eax
+  000000EA: 68 00 00 00 00     push        offset $SG2662
+  000000EF: E8 00 00 00 00     call        _printf
+  000000F4: 83 C4 08           add         esp,8
+  000000F7: 68 00 00 00 00     push        offset _M
+  000000FC: 68 00 00 00 00     push        offset _A
+  00000101: E8 00 00 00 00     call        _swtch
+  00000106: 83 C4 08           add         esp,8
+  00000109: 8B E5              mov         esp,ebp
+  0000010B: 5D                 pop         ebp
+  0000010C: C3                 ret
+  0000010D: CC                 int         3
+  0000010E: CC                 int         3
+  0000010F: CC                 int         3
+_B_proc:
+  00000110: 55                 push        ebp
+  00000111: 8B EC              mov         ebp,esp
+  00000113: 83 EC 08           sub         esp,8
+  00000116: C7 45 FC 01 00 00  mov         dword ptr [ebp-4],1
+            00
+  0000011D: C7 45 F8 01 00 00  mov         dword ptr [ebp-8],1
+            00
+  00000124: 8B 45 FC           mov         eax,dword ptr [ebp-4]
+  00000127: A3 00 00 00 00     mov         dword ptr [_temp],eax
+  0000012C: 8B 0D 00 00 00 00  mov         ecx,dword ptr [_temp]
+  00000132: 51                 push        ecx
+  00000133: 68 00 00 00 00     push        offset $SG2667
+  00000138: E8 00 00 00 00     call        _printf
+  0000013D: 83 C4 08           add         esp,8
+  00000140: 68 00 00 00 00     push        offset _A
+  00000145: 68 00 00 00 00     push        offset _B
+  0000014A: E8 00 00 00 00     call        _swtch
+  0000014F: 83 C4 08           add         esp,8
+  00000152: EB 09              jmp         0000015D
+  00000154: 8B 55 F8           mov         edx,dword ptr [ebp-8]
+  00000157: 83 C2 01           add         edx,1
+  0000015A: 89 55 F8           mov         dword ptr [ebp-8],edx
+  0000015D: A1 00 00 00 00     mov         eax,dword ptr [_round]
+  00000162: 83 E8 01           sub         eax,1
+  00000165: 39 45 F8           cmp         dword ptr [ebp-8],eax
+  00000168: 7D 3C              jge         000001A6
+  0000016A: 8B 4D FC           mov         ecx,dword ptr [ebp-4]
+  0000016D: 03 0D 00 00 00 00  add         ecx,dword ptr [_temp]
+  00000173: 89 4D FC           mov         dword ptr [ebp-4],ecx
+  00000176: 8B 55 FC           mov         edx,dword ptr [ebp-4]
+  00000179: 89 15 00 00 00 00  mov         dword ptr [_temp],edx
+  0000017F: A1 00 00 00 00     mov         eax,dword ptr [_temp]
+  00000184: 50                 push        eax
+  00000185: 68 00 00 00 00     push        offset $SG2671
+  0000018A: E8 00 00 00 00     call        _printf
+  0000018F: 83 C4 08           add         esp,8
+  00000192: 68 00 00 00 00     push        offset _A
+  00000197: 68 00 00 00 00     push        offset _B
+  0000019C: E8 00 00 00 00     call        _swtch
+  000001A1: 83 C4 08           add         esp,8
+  000001A4: EB AE              jmp         00000154
+  000001A6: 8B 0D 00 00 00 00  mov         ecx,dword ptr [_n]
+  000001AC: 81 E1 01 00 00 80  and         ecx,80000001h
+  000001B2: 79 05              jns         000001B9
+  000001B4: 49                 dec         ecx
+  000001B5: 83 C9 FE           or          ecx,0FFFFFFFEh
+  000001B8: 41                 inc         ecx
+  000001B9: 83 F9 01           cmp         ecx,1
+  000001BC: 75 3C              jne         000001FA
+  000001BE: 8B 55 FC           mov         edx,dword ptr [ebp-4]
+  000001C1: 03 15 00 00 00 00  add         edx,dword ptr [_temp]
+  000001C7: 89 55 FC           mov         dword ptr [ebp-4],edx
+  000001CA: 8B 45 FC           mov         eax,dword ptr [ebp-4]
+  000001CD: A3 00 00 00 00     mov         dword ptr [_temp],eax
+  000001D2: 8B 0D 00 00 00 00  mov         ecx,dword ptr [_temp]
+  000001D8: 51                 push        ecx
+  000001D9: 68 00 00 00 00     push        offset $SG2673
+  000001DE: E8 00 00 00 00     call        _printf
+  000001E3: 83 C4 08           add         esp,8
+  000001E6: 68 00 00 00 00     push        offset _M
+  000001EB: 68 00 00 00 00     push        offset _B
+  000001F0: E8 00 00 00 00     call        _swtch
+  000001F5: 83 C4 08           add         esp,8
+  000001F8: EB 3A              jmp         00000234
+  000001FA: 8B 55 FC           mov         edx,dword ptr [ebp-4]
+  000001FD: 03 15 00 00 00 00  add         edx,dword ptr [_temp]
+  00000203: 89 55 FC           mov         dword ptr [ebp-4],edx
+  00000206: 8B 45 FC           mov         eax,dword ptr [ebp-4]
+  00000209: A3 00 00 00 00     mov         dword ptr [_temp],eax
+  0000020E: 8B 0D 00 00 00 00  mov         ecx,dword ptr [_temp]
+  00000214: 51                 push        ecx
+  00000215: 68 00 00 00 00     push        offset $SG2675
+  0000021A: E8 00 00 00 00     call        _printf
+  0000021F: 83 C4 08           add         esp,8
+  00000222: 68 00 00 00 00     push        offset _A
+  00000227: 68 00 00 00 00     push        offset _B
+  0000022C: E8 00 00 00 00     call        _swtch
+  00000231: 83 C4 08           add         esp,8
+  00000234: 8B E5              mov         esp,ebp
+  00000236: 5D                 pop         ebp
+  00000237: C3                 ret
+  00000238: CC                 int         3
+  00000239: CC                 int         3
+  0000023A: CC                 int         3
+  0000023B: CC                 int         3
+  0000023C: CC                 int         3
+  0000023D: CC                 int         3
+  0000023E: CC                 int         3
+  0000023F: CC                 int         3
+_main:
+  00000240: 55                 push        ebp
+  00000241: 8B EC              mov         ebp,esp
+  00000243: B8 08 20 00 00     mov         eax,2008h
+  00000248: E8 00 00 00 00     call        __chkstk
+  0000024D: A1 00 00 00 00     mov         eax,dword ptr [___security_cookie]
+  00000252: 33 C5              xor         eax,ebp
+  00000254: 89 45 FC           mov         dword ptr [ebp-4],eax
+  00000257: A1 00 00 00 00     mov         eax,dword ptr [_n]
+  0000025C: 83 C0 01           add         eax,1
+  0000025F: 99                 cdq
+  00000260: 2B C2              sub         eax,edx
+  00000262: D1 F8              sar         eax,1
+  00000264: A3 00 00 00 00     mov         dword ptr [_round],eax
+  00000269: C7 05 00 00 00 00  mov         dword ptr [_A],offset _A_proc
+            00 00 00 00
+  00000273: 8D 85 F4 EF FF FF  lea         eax,[ebp-100Ch]
+  00000279: A3 04 00 00 00     mov         dword ptr [_A+4],eax
+  0000027E: C7 05 00 00 00 00  mov         dword ptr [_B],offset _B_proc
+            00 00 00 00
+  00000288: 8D 4D F4           lea         ecx,[ebp-0Ch]
+  0000028B: 89 0D 04 00 00 00  mov         dword ptr [_B+4],ecx
+  00000291: 68 00 00 00 00     push        offset _A
+  00000296: 68 00 00 00 00     push        offset _M
+  0000029B: E8 00 00 00 00     call        _swtch
+  000002A0: 83 C4 08           add         esp,8
+  000002A3: 8B 15 00 00 00 00  mov         edx,dword ptr [_temp]
+  000002A9: 52                 push        edx
+  000002AA: 68 00 00 00 00     push        offset $SG2684
+  000002AF: E8 00 00 00 00     call        _printf
+  000002B4: 83 C4 08           add         esp,8
+  000002B7: 68 00 00 00 00     push        offset $SG2686
+  000002BC: E8 00 00 00 00     call        _system
+  000002C1: 83 C4 04           add         esp,4
+  000002C4: 33 C0              xor         eax,eax
+  000002C6: 8B 4D FC           mov         ecx,dword ptr [ebp-4]
+  000002C9: 33 CD              xor         ecx,ebp
+  000002CB: E8 00 00 00 00     call        @__security_check_cookie@4
+  000002D0: 8B E5              mov         esp,ebp
+  000002D2: 5D                 pop         ebp
+  000002D3: C3                 ret
+
+  Summary
+
+           8 .bss
+          2A .data
+          9C .debug$S
+          2F .drectve
+         2D4 .text
